@@ -1,39 +1,49 @@
 import React from 'react';
-import {Navigate, Route, Routes} from "react-router-dom";
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Navigate,
+    Route, RouterProvider,
+    Routes
+} from "react-router-dom";
 import Login from "./Login";
 import Chat from "./Chat";
 import Home from "./Home";
 import NotFound from "./NotFound";
 import Layout from "./Layout";
-import SinglePage from "./SinglePage";
-import BlogPage from "./BlogPage";
+import SinglePage, {singlePageLoader} from "./SinglePage";
+import BlogPage, {blogLoader} from "./BlogPage";
 import EditPage from "./EditPage";
 import RequiredAuth from "../hoc/RequiredAuth";
 import AuthProvider from "../hoc/AuthProvider";
 
-const AppRouter = () => {
+const router=createBrowserRouter(createRoutesFromElements(
 
+        <Route path={'/'} element={<Layout/>}>
+            <Route index element={<Home/>}/>
+            <Route path={'login'} element={<Login/>}/>
+            <Route path={'chat'} element={<Chat/>}>
+                <Route path={'settings'} element={<p>Settings</p>}/>
+                <Route path={'profile'} element={<p>Profile</p>}/>
+            </Route>
+            <Route path={'chat'} element={<Navigate to={'/chat'} replace/>}/>
+
+            <Route path={'posts'} element={<BlogPage/>} loader={blogLoader}/>
+            <Route path={'posts/:id'} element={<SinglePage/>} loader={singlePageLoader}/>
+            <Route path={'posts/:id/edit'} element={<RequiredAuth>
+                <EditPage/>
+            </RequiredAuth>}/>
+            <Route path={'*'} element={<NotFound/>}/>
+        </Route>
+
+))
+
+const AppRouter = () => {
 
     return (
         <>
             <AuthProvider>
-                <Routes>
-                    <Route path={'/'} element={<Layout/>}>
-                        <Route index element={<Home/>}/>
-                        <Route path={'login'} element={<Login/>}/>
-                        <Route path={'chat'} element={<Chat/>}>
-                            <Route path={'settings'} element={<p>Settings</p>}/>
-                            <Route path={'profile'} element={<p>Profile</p>}/>
-                        </Route>
-                        <Route path={'chat'} element={<Navigate to={'/chat'} replace/>}/>
-                        <Route path={'posts'} element={<BlogPage/>}/>
-                        <Route path={'posts/:id'} element={<SinglePage/>}/>
-                        <Route path={'posts/:id/edit'} element={<RequiredAuth>
-                            <EditPage/>
-                        </RequiredAuth>}/>
-                        <Route path={'*'} element={<NotFound/>}/>
-                    </Route>
-                </Routes>
+                <RouterProvider router={router}/>
             </AuthProvider>
         </>
 
