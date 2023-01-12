@@ -1,9 +1,13 @@
 import React from 'react';
+import {Link, Outlet} from "react-router-dom";
 
 const Chat = () => {
     return (
         <div>
-            chat
+            <div>Chat</div>
+            <Link to={'settings'}>Settings</Link>
+            <Link to={'profile'}>Profile</Link>
+            <Outlet/>
         </div>
     );
 };

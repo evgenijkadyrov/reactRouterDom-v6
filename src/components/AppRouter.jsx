@@ -21,7 +21,10 @@ const AppRouter = () => {
                     <Route path={'/'} element={<Layout/>}>
                         <Route index element={<Home/>}/>
                         <Route path={'login'} element={<Login/>}/>
-                        <Route path={'chat'} element={<Chat/>}/>
+                        <Route path={'chat'} element={<Chat/>}>
+                            <Route path={'settings'} element={<p>Settings</p>}/>
+                            <Route path={'profile'} element={<p>Profile</p>}/>
+                        </Route>
                         <Route path={'chat'} element={<Navigate to={'/chat'} replace/>}/>
                         <Route path={'posts'} element={<BlogPage/>}/>
                         <Route path={'posts/:id'} element={<SinglePage/>}/>
