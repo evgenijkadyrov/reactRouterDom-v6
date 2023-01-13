@@ -1,8 +1,20 @@
 import React from 'react';
-import {Await, defer, json, Link, useLoaderData, useSearchParams} from "react-router-dom";
+import {
+    Await,
+    defer,
+    json,
+    Link,
+    useLoaderData,
+    useParams,
+    useSearchParams
+} from "react-router-dom";
 import BlogFilter from "./BlogFilter";
+import {useAuth} from "../hook/useAuth";
+import CreatePost from "./CreatePost";
 
 const BlogPage = () => {
+    const{user}=useAuth()
+    const  {id}=useParams()
     const posts = useLoaderData()
 
     const [searchParams, setSearchParams] = useSearchParams()
@@ -16,6 +28,10 @@ const BlogPage = () => {
             <h1>Our news</h1>
             <BlogFilter setSearchParams={setSearchParams} postQuery={postQuery}
                         latest={latest}/>
+            <Link to={`/posts/newPost`}>
+                <button>Create post</button>
+            </Link>
+
             <React.Suspense fallback={<h2>Loading...</h2>}>
 
                 <Await resolve={posts} >{

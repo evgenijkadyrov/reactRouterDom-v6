@@ -5,10 +5,13 @@ import CustomLink from "./CustomLink";
 import {useAuth} from "../hook/useAuth";
 
 const Layout = () => {
-    const {signout}=useAuth()
+    const {signout,user}=useAuth()
     const navigate=useNavigate()
     const handleLogOut=()=>{
         signout(()=>navigate('/',{replace:true}))
+    }
+    const handleLogIn=()=>{
+       navigate('/login')
     }
     return (<>
             <header className={'header'}>
@@ -16,7 +19,9 @@ const Layout = () => {
                 <CustomLink to={'/login'}>Login</CustomLink>
                 <CustomLink to={'/chat'} >Chat</CustomLink>
                 <CustomLink to={'/posts'} >Blog</CustomLink>
-                <button onClick={handleLogOut}>Log out</button>
+                {user?<button onClick={handleLogOut}>Log out</button>
+                :<button onClick={handleLogIn}>Log in</button>}
+
             </header>
             <Outlet/>
             <footer>2023</footer>

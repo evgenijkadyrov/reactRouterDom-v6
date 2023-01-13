@@ -17,6 +17,7 @@ import EditPage from "./EditPage";
 import RequiredAuth from "../hoc/RequiredAuth";
 import AuthProvider from "../hoc/AuthProvider";
 import ErrorElement from "./ErrorElement";
+import CreatePost from "./CreatePost";
 
 const router=createBrowserRouter(createRoutesFromElements(
 
@@ -31,9 +32,8 @@ const router=createBrowserRouter(createRoutesFromElements(
 
             <Route path={'posts'} element={<BlogPage/>} loader={blogLoader} errorElement={<ErrorElement/>}/>
             <Route path={'posts/:id'} element={<SinglePage/>} loader={singlePageLoader}/>
-            <Route path={'posts/:id/edit'} element={<RequiredAuth>
-                <EditPage/>
-            </RequiredAuth>}/>
+            <Route path={'posts/:id/edit'} element={<RequiredAuth> <EditPage/> </RequiredAuth>}/>
+            <Route path={'posts/newPost'} element={<RequiredAuth> <CreatePost/> </RequiredAuth>}/>
             <Route path={'*'} element={<NotFound/>}/>
         </Route>
 
