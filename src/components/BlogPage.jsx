@@ -1,9 +1,9 @@
 import React from 'react';
-import {Await, defer, Link, useLoaderData, useSearchParams} from "react-router-dom";
+import {Await, defer, json, Link, useLoaderData, useSearchParams} from "react-router-dom";
 import BlogFilter from "./BlogFilter";
 
 const BlogPage = () => {
-    const {posts} = useLoaderData()
+    const posts = useLoaderData()
 
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -18,7 +18,7 @@ const BlogPage = () => {
                         latest={latest}/>
             <React.Suspense fallback={<h2>Loading...</h2>}>
 
-                <Await resolve={posts} errorElement={<p>Error loading</p>}>{
+                <Await resolve={posts} >{
                     (posts) => (<> {posts.filter(post => post.title.includes(postQuery) && post.id >= startFrom).map(post => (
                             <Link key={post.id} to={`/posts/${post.id}`}>
                                 <li>{post.title}</li>
@@ -34,14 +34,18 @@ const BlogPage = () => {
 };
 
 async function getPosts() {
+
     const res = await fetch('https://jsonplaceholder.typicode.com/posts')
     return res.json()
 }
 
 export const blogLoader = async () => {
+    const posts= await getPosts()
 
-
-    return defer({posts: getPosts()})
+    if(!posts.length) {
+        throw  json({message: 'Not found', reason: 'wrong url'}, {status: 405})
+    }
+    return posts
 
 }
 export default BlogPage;

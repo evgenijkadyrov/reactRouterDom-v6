@@ -16,6 +16,7 @@ import BlogPage, {blogLoader} from "./BlogPage";
 import EditPage from "./EditPage";
 import RequiredAuth from "../hoc/RequiredAuth";
 import AuthProvider from "../hoc/AuthProvider";
+import ErrorElement from "./ErrorElement";
 
 const router=createBrowserRouter(createRoutesFromElements(
 
@@ -28,7 +29,7 @@ const router=createBrowserRouter(createRoutesFromElements(
             </Route>
             <Route path={'chat'} element={<Navigate to={'/chat'} replace/>}/>
 
-            <Route path={'posts'} element={<BlogPage/>} loader={blogLoader}/>
+            <Route path={'posts'} element={<BlogPage/>} loader={blogLoader} errorElement={<ErrorElement/>}/>
             <Route path={'posts/:id'} element={<SinglePage/>} loader={singlePageLoader}/>
             <Route path={'posts/:id/edit'} element={<RequiredAuth>
                 <EditPage/>
